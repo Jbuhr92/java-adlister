@@ -7,9 +7,12 @@
 
 <html>
 <head>
-    <title><%= "some title" %></title>
+    <jsp:include page="partials/head.jsp">
+        <jsp:param name="title" value="Start Page"/>
+    </jsp:include>
 </head>
 <body>
+
     <h1> The current count is <%= count %> </h1>
     <c:if test="true">
         <h1>Variable names should be very descriptive</h1>
@@ -17,5 +20,6 @@
     <c:if test="false">
         <h1>single letter variable names are good</h1>
     </c:if>
+
 </body>
 </html>
