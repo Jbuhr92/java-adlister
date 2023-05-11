@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:src/main/java/controllers/CounterServlet.java
+package controllers;
+========
 package controllers.controllers;
+>>>>>>>> javabeans:src/main/java/controllers/controllers/CounterServlet.java
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
