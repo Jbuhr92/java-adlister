@@ -9,10 +9,13 @@ import java.io.IOException;
 @WebServlet(name = "LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
         HttpSession session = request.getSession();
-        String language = (String) session.getAttribute("language");
-        System.out.println(language);
+        boolean isAdmin = session.getAttribute("username") != null;
+        if (isAdmin) {
+            response.sendRedirect("/profile");
+            return;
+        }
+        request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -20,13 +23,7 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         boolean validAttempt = username.equals("admin") && password.equals("password");
-        boolean isAdmin = username.equals("admin");
 
-        if (isAdmin) {
-            session.setAttribute("isAdmin", true);
-        } else {
-            session.setAttribute("isAdmin", false);
-        }
 
 
         if (validAttempt) {
