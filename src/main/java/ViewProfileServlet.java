@@ -12,7 +12,8 @@ public class ViewProfileServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("username");
         System.out.println(username + " Just logged in.");
-        if (session.getAttribute("isAdmin") == null || (boolean) session.getAttribute("isAdmin") == false){
+        boolean isAdmin = session.getAttribute("username") != null;
+        if (!isAdmin) {
             response.sendRedirect("/login");
             return;
         }
