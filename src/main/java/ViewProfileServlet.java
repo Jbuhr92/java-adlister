@@ -12,7 +12,7 @@ public class ViewProfileServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("username");
         System.out.println(username + " Just logged in.");
-        if ((boolean) request.getSession().getAttribute("isAdmin") == false){
+        if (session.getAttribute("isAdmin") == null || (boolean) session.getAttribute("isAdmin") == false){
             response.sendRedirect("/login");
             return;
         }

@@ -12,7 +12,7 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         String username = (String) session.getAttribute("username");
-        session.removeAttribute(username);
+        session.removeAttribute("username");
         req.getRequestDispatcher("/logout.jsp").forward(req, resp);
     }
 

@@ -23,9 +23,9 @@ public class LoginServlet extends HttpServlet {
         boolean isAdmin = username.equals("admin");
 
         if (isAdmin) {
-            request.getSession().setAttribute("isAdmin", true);
+            session.setAttribute("isAdmin", true);
         } else {
-            request.getSession().setAttribute("isAdmin", false);
+            session.setAttribute("isAdmin", false);
         }
 
 
