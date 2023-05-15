@@ -1,3 +1,5 @@
+package controllers;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -6,16 +8,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name = "LoginServlet", urlPatterns = "/login")
+@WebServlet(name = "controllers.LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        boolean isAdmin = session.getAttribute("username") != null;
-        if (isAdmin) {
+
+        if (request.getSession().getAttribute("user") != null) {
             response.sendRedirect("/profile");
             return;
         }
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -27,7 +29,9 @@ public class LoginServlet extends HttpServlet {
 
 
         if (validAttempt) {
-            session.setAttribute("username", username);
+
+            request.getSession().setAttribute("user", username);
+
             response.sendRedirect("/profile");
         } else {
             response.sendRedirect("/login");
