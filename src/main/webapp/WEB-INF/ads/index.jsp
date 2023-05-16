@@ -3,7 +3,7 @@
 <html>
 <head>
     <jsp:include page="/WEB-INF/partials/head.jsp">
-        <jsp:param name="title" value="Viewing All The Ads" />
+        <jsp:param name="title" value="Viewing All The dao.Ads" />
     </jsp:include>
 </head>
 <body>
@@ -15,6 +15,7 @@
     <c:forEach var="ad" items="${ads}">
         <div class="col-md-6">
             <h2>${ad.title}</h2>
+            <p>Created by: ${ad.user.user}</p>
             <p>${ad.description}</p>
         </div>
     </c:forEach>
