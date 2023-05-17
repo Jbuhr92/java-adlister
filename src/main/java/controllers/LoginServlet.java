@@ -1,4 +1,7 @@
-package com.codeup.adlister.controllers;
+package controllers;
+
+import dao.DaoFactory;
+import models.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,6 +31,7 @@ public class LoginServlet extends HttpServlet {
 
         if (validAttempt) {
             // TODO: store the logged in user object in the session, instead of just the username
+            User user = DaoFactory.getUsersDao().findByUsername(username)
             request.getSession().setAttribute("user", username);
             response.sendRedirect("/profile");
         } else {
