@@ -31,7 +31,7 @@ public class RegisterServlet extends HttpServlet {
         String confirmPassword = request.getParameter("confirmPassword");
         User user = DaoFactory.getUsersDao().findByUsername(username);
         if (!inputHasErrors(username, email, password, confirmPassword, user)) {
-        user = new User(user, email, password);
+        user = new User(username, email, password);
         DaoFactory.getUsersDao().insert(user);
             response.sendRedirect("/login");
         } else {

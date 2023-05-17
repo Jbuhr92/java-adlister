@@ -32,7 +32,7 @@ public class UsersDao implements Users{
             while (resultSet.next()){
                 User user = new User(
                   resultSet.getLong("id"),
-                        resultSet.getString("user")
+                        resultSet.getString("username")
                 );
                 users.add(user);
             }
@@ -45,7 +45,7 @@ public class UsersDao implements Users{
 
     @Override
     public User findByUsername(String user) {
-        String query = "SELECT * FROM users WHERE user = ? LIMIT 1";
+        String query = "SELECT * FROM users WHERE username = ? LIMIT 1";
         try {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, user);
@@ -56,11 +56,11 @@ public class UsersDao implements Users{
     }
 
     public Long insert(User user) {
-        String query = "INSERT INTO users(user, email, password) VALUES (?, ?, ?)";
+        String query = "INSERT INTO users(username, email, password) VALUES (?, ?, ?)";
         try {
             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, user.getUser());
-            stmt.setString(2, user.getPassword());
+            stmt.setString(2, user.getEmail());
             stmt.setString(3, user.getPassword());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
@@ -77,7 +77,7 @@ public class UsersDao implements Users{
         }
         return new User(
                 rs.getLong("id"),
-                rs.getString("user"),
+                rs.getString("username"),
                 rs.getString("email"),
                 rs.getString("password")
         );
