@@ -42,8 +42,44 @@ public class UsersDao implements Users{
         return users;
     }
 
-    @Override
-    public void insert(User user) {
 
+    @Override
+    public User findByUsername(String user) {
+        String query = "SELECT * FROM users WHERE user = ? LIMIT 1";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, user);
+            return extractUser(stmt.executeQuery());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Long insert(User user) {
+        String query = "INSERT INTO users(user, email, password) VALUES (?, ?, ?)";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, user.getUser());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getPassword());
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            rs.next();
+            return rs.getLong(1);
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    private User extractUser(ResultSet rs) throws SQLException {
+        if (!rs.next()) {
+            return null;
+        }
+        return new User(
+                rs.getLong("id"),
+                rs.getString("user"),
+                rs.getString("email"),
+                rs.getString("password")
+        );
     }
 }

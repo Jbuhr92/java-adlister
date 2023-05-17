@@ -1,5 +1,8 @@
 package controllers;
 
+import dao.DaoFactory;
+import models.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,13 +23,22 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        boolean validAttempt = username.equals("admin") && password.equals("password");
-
-        if (validAttempt) {
-            request.getSession().setAttribute("user", username);
+        User user = DaoFactory.getUsersDao().findByUsername(username);
+        if (validAttempt(username, password, user)) {
+            request.getSession().setAttribute("user", user);
             response.sendRedirect("/profile");
         } else {
             response.sendRedirect("/login");
         }
+    }
+
+    public static boolean validAttempt(String username, String password, User user) {
+        if (user == null) {
+            return false;
+        }
+        if (user.getPassword().equals(password) ) {
+            return true;
+        }
+        return false;
     }
 }

@@ -1,6 +1,7 @@
 package dao;
 
 import com.mysql.cj.jdbc.Driver;
+
 import config.Config;
 import models.Ad;
 import models.User;
@@ -58,16 +59,24 @@ public class MySQLAdsDao implements Ads{
 
     @Override
     public Long insert(Ad ad) {
+        String query = "INSERT INTO ads (user_id, title, description) VALUES (?, ?, ?)";
         try {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("INSERT INTO ads (user_id, title, description) VALUES (" + ad.getUser() + ", '" + ad.getTitle() +"', '" + ad.getDescription() + "')", Statement.RETURN_GENERATED_KEYS);
-            ResultSet resultSet = statement.getGeneratedKeys();
+            PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            stmt.setLong(1, ad.getUser().getId());
+            stmt.setString(2, ad.getTitle());
+            stmt.setString(3, ad.getDescription());
+
+            stmt.executeUpdate();
+            ResultSet resultSet = stmt.getGeneratedKeys();
+
             if(resultSet.next()){
                 return resultSet.getLong(1);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    return null;
+        return null;
     }
+
 }
